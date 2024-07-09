@@ -1,0 +1,140 @@
+# environment-related configuration
+seed: 4379
+episode_num: 80
+is_train: &is_train_anchor yes
+
+# episode_num: 30
+# is_train: &is_train_anchor no
+
+# the bus dispatched before hold_start_time or after hold_end_time will not be held
+hold_start_time: 0
+hold_end_time: 10800
+episode_duration: 10800
+
+# three types of environment: 'homogeneous_one_route', 'cd_route_3' and 'gbrt'
+# env_name: 'homogeneous_one_route'
+env_name: 'cd_route_3'
+# env_name: 'gbrt'
+# indicate if there is a schedule for control bus motions
+has_schedule: yes
+
+# indicate the metrics returned by the environment
+metric_names:
+  - 'headway_std'
+  # virtual bus has slack, so the schedule of buses outside the holding period still consider holds
+  # but the bus outside the holding period is not held, so the schedule deviation is not accurate
+  - 'schedule_deviation'
+  # - 'pax_in_vehicle_wait_time'
+  # - 'pax_out_vehicle_wait_time'
+  # - 'queueing_delay'
+  - 'hold_time'
+
+wandb_config:
+  # use weights & biases (wandb) to record the experiment or not, yes or no
+  is_record_wandb: no
+  wandb_project_name: 'open_source_demo'
+
+# choose the running agent, including 'Do_Nothing', 'Simple_Control_Nonlinear', 'Forward_Headway_Control', 'Naive_DDPG', 'Local_Spacing_DDPG', 'Event_DDPG'
+#running_agent: 'Do_Nothing'
+#running_agent: 'Simple_Control_Nonlinear'
+#running_agent: 'Forward_Headway_Control'
+running_agent: 'Naive_DDPG'
+#running_agent: 'Local_Spacing_DDPG'
+#running_agent: 'Event_DDPG'
+
+
+# agent-related configuration
+agent_config:
+  'Do_Nothing':
+    agent_name: 'Do_Nothing'
+
+  'Simple_Control_Nonlinear':
+    agent_name: 'Simple_Control_Nonlinear'
+    #   # 'f0' and 'f1' must be specified for simple control
+    #   # if 'f0' is non-zero and negative and 'f0=-f1', it is the one used in Daganzo (2009)
+    #   # if 'f1=0' and  'f0\in [-1,0]', it is the simple control in Xuan(2011) and if 'f0=-1', it is the traditional schdule control
+    fs:
+      f0: 0.2
+      f1: 0
+    slack: 10
+    # `base_type` determines which type of information is used, either 'rtd' or 'arrival'.
+    base_type: 'arrival'
+    #   # `episode_for_stabilize_average_hold` is the number of episodes for stabilizing the average hold time.
+    #   # if 0, simply the slack is used for each stop
+    episode_num_for_stabilize_average_hold : 5
+    episode_duration_for_stabilize_average_hold : 10800
+  
+  'Forward_Headway_Control':
+    agent_name: 'Forward_Headway_Control'
+    alpha: 0.4
+    slack: 30
+    base_type: 'rtd'
+    is_nonlinear: yes
+    episode_num_for_stabilize_average_hold : 10
+    episode_duration_for_stabilize_average_hold : 10800
+
+  'Naive_DDPG':
+    agent_name: 'Naive_DDPG'
+    is_train: *is_train_anchor
+    max_hold_time: 60
+    state_size: 1
+    hidden_size: [64, ]
+    actor_lr: 0.001
+    critic_lr: 0.001
+    gamma: 0.9
+    polya: 0.995
+    memory_size: 20000
+    update_cycle: 5
+    batch_size: 64
+    init_noise_level: 0.2
+    decay_rate: 0.95
+    schedule_headway: 300
+    w: 0.03 # penalty for holding time
+  
+  'Event_DDPG':
+    agent_name: 'Event_DDPG'
+    is_train: *is_train_anchor
+    max_hold_time: 60
+    state_size: 3
+    hidden_size: [64, ]
+    memory_size: 20000
+    actor_lr: 0.001
+    critic_lr: 0.001
+    gamma: 0.9
+    polya: 0.995
+    update_cycle: 5
+    batch_size: 64
+    init_noise_level: 0.2
+    decay_rate: 0.95
+    w: 0.003 # penalty for holding time
+
+  'Local_Spacing_DDPG':
+    agent_name: 'Local_Spacing_DDPG'
+    is_train: *is_train_anchor
+    max_hold_time: 60
+    state_size: 2
+    hidden_size: [64, ]
+    memory_size: 10000
+    actor_lr: 0.001
+    critic_lr: 0.001
+    gamma: 0.9
+    polya: 0.995
+    update_cycle: 5
+    batch_size: 64
+    init_noise_level: 0.2
+    decay_rate: 0.95
+
+  # 'Attention_DDPG':
+  #   agent_name: 'Attention_DDPG'
+  #   is_train: yes
+  #   max_hold_time: 120
+  #   batch_size: 16
+  #   embed_size: 32
+  #   hidden_size: [128, 128, 64,]
+  #   actor_lr: 0.005
+  #   critic_lr: 0.005
+  #   gamma: 0.95
+  #   polya: 0.995
+  #   memory_size: 20000
+  #   init_noise_level: 0.2
+  #   decay_rate: 0.95
