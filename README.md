@@ -1,8 +1,8 @@
 # EXACT: EXperimental Adaptive Control Testbed for Transit
 
-This repository hosts a simulation testbed that can be used as an environment for developing and comparing different dynamic holding strategies. Any holding strategy, whether model-based or model-free RL (Reinforcement Learning), can be customized by users within our platform, provided they create a class that fulfills the basic requirements of the exposed API.
+This repository hosts a simulation testbed that serves as an environment for developing and benchmarking various dynamic bus holding strategies. Users can customize any holding strategy within the platform, whether model-based or utilizing model-free Reinforcement Learning (RL), by creating a class that fulfills the basic requirements of the exposed API.
 
-The platform currently provides two real-world datasets, a Route No.3 in Chengdu, China and a portion of the Guangzhou Bus Rapid Transit (BRT) corridor in China. The Chengdu route 3 environment features featuring high passenger demand and high dispatch frequency. The Guangzhou BRT environment offers a multi-line operation setting where queueing is frequently observed at stops. You can also customize your own environment using your dataset; see the usage instructions for details.
+The platform currently provides two real-world datasets: Route No.3 in Chengdu, China, and a portion of the Guangzhou Bus Rapid Transit (BRT) corridor. The Chengdu Route 3 environment features high passenger demand and frequent dispatching, while the Guangzhou BRT environment offers a multi-line operation setting where queueing is commonly observed at stops. Users also have the flexibility to customize their own environment using their datasets, enabling the testing and evaluation of holding strategies across a wide range of scenarios.
 
 For the control agent, we have currently furnished several control methods proposed in the literature:
 
@@ -15,7 +15,7 @@ For the control agent, we have currently furnished several control methods propo
 
 # Environment setup
 
-The follwing steps guide you thorough how to build up the environment for running the `EXACT`.
+The following steps will guide you through the process of setting up the environment.
 
 **Bulid virtual enviroment**
 
@@ -56,6 +56,16 @@ python main.py
 
 Inherit the `RLAgent` class from the `rl_agent` module and implement your specific algorithm in the `calculate_hold_time`. This function will provide you the `snapshot` that record all potentially required states, including bus ID, route ID, number of passengers (pax_num), location relative to the terminal (loc_relative_to_terminal), and etc.
 
+# References
+[1] Daganzo, C. F., 2009. A headway-based approach to eliminate bus bunching: Systematic analysis and comparisons. Transportation Research Part B: Methodological 43 (10), 913–921.
+
+[2] Xuan, Y., Argote, J., Daganzo, C. F., 2011. Dynamic bus holding strategies for schedule reliability: Optimal linear control and performance analysis. Transportation Research Part B: Methodological 45 (10), 1831–1845.
+
+[3] Alesiani, F., Gkiotsalitis, K., 2018. Reinforcement learning-based bus holding for high-frequency services. In: 2018 21st International Conference on Intelligent Transportation Systems (ITSC). IEEE, pp. 3162–3168.
+
+[4] Wang, J., Sun, L., 2021. Reducing bus bunching with asynchronous multi-agent reinforcement learning. arXiv preprint arXiv:2105.00376.
+
 # For any questions, feel free to contact us via
 
 [1221201Z5005@smail.swufe.edu.cn](mailto:1221201Z5005@smail.swufe.edu.cn) or [shenminyu@swufe.edu.cn](mailto:shenminyu@swufe.edu.cn)
+
