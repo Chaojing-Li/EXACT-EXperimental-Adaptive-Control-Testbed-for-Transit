@@ -32,11 +32,11 @@ The follwing steps guide you thorough how to build up the environment for runnin
 
 # Running Built-in Control Methods and Datasets
 
-## 1. **Configure the Algorithm and Simulation Environment**:
+## **Configure the Algorithm and Simulation Environment**:
 
 Specify the control algorithm and simulation environment in the `config.yaml` file.
 
-## 2. **Run the Simulation**:
+## **Run the Simulation**:
 
 After specifying the control agent and its associated parameters in the `config.yaml` file, run the main function through the terminal:
 
