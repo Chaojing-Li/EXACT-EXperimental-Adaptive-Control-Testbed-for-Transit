@@ -46,11 +46,11 @@ python main.py
 
 # Customizing Your Own Environment
 
-1. Prepare your own dataset, including each route's station information, dispatch frequency, passenger demand (OD), and travel time between stations.
+- Prepare your own dataset, including each route's station information, dispatch frequency, passenger demand (OD), and travel time between stations.
 
-2. Inherit the class **Network** and implement the provided methods to create a bus network with the route(s)'s information specified.
+- Inherit the class **Network** and implement the provided methods to create a bus network with the route(s)'s information specified.
 
-3. Implement the `Components_Factory` protocol and then add it to the `Builder` class. This factory will create the related components used in the simulation, including terminals, stops, links, and a holder.
+- Implement the `Components_Factory` protocol and then add it to the `Builder` class. This factory will create the related components used in the simulation, including terminals, stops, links, and a holder.
 
 # Customizing Your Own RL Algorithm
 
