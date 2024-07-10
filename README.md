@@ -30,7 +30,7 @@ The follwing steps guide you thorough how to build up the environment for runnin
  pip install -r requirements.txt
 ```
 
-# Running built-in control methods and datasets
+# Running Built-in Control Methods and Datasets
 
 ## 1. **Configure the Algorithm and Simulation Environment**:
 
